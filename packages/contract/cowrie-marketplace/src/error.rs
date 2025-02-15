@@ -9,6 +9,9 @@ pub enum ContractError {
     #[error("Unauthorized")]
     Unauthorized {},
 
+    #[error("Cannot buy own listing")]
+    CannotBuyOwnListing {},
+
     #[error("Invalid commission rate: {0}")]
     InvalidCommissionRate(String),
 
@@ -36,4 +39,3 @@ pub enum ContractError {
     #[error("Cannot migrate from different contract: {previous_contract}")]
     CannotMigrate { previous_contract: String },
 }
-

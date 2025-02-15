@@ -1,6 +1,6 @@
 use crate::error::ContractError;
-use crate::state::{Config, Listing, CONFIG, LISTINGS};
-use cosmwasm_std::{Addr, BankMsg, Coin, DepsMut, MessageInfo, Response, StdResult, Uint128};
+use crate::state::{Listing, CONFIG};
+use cosmwasm_std::{Addr, BankMsg, Coin, DepsMut, MessageInfo, StdResult, Uint128};
 
 pub fn validate_payment(
     sent_funds: &[Coin],

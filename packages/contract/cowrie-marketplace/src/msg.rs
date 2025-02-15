@@ -8,11 +8,6 @@ pub struct InstantiateMsg {
 }
 
 #[cw_serde]
-pub enum MigrateMsg {
-    // Empty for now, we can add parameters here later if needed
-}
-
-#[cw_serde]
 pub enum ExecuteMsg {
     CreateListing {
         title: String,
