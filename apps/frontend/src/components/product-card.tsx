@@ -1,0 +1,24 @@
+import {  Listing } from "@thehoracle/cowrie-marketplace-types/dist/CowrieMarketplace.types"
+
+const ProductCard = ({ 
+    title,
+    price,
+    image_url,
+    token_denom, 
+ }: Listing) => {
+    
+    return <div className="flex flex-col md:flex-row rounded-t-lg md:rounded-tl-lg md:rounded-bl-lg bg-stone-100 dark:bg-stone-900 dark:text-stone-200 shadow-lg">
+        <div className="w-full aspect-square overflow-hidden ">
+            {/* image */}
+        </div>
+        <div className="flex flex-col justify-between p-2">
+            <h3>{title}</h3>
+            <div className="flex flex-col items-start">
+                <span className="text-[8px]">{token_denom}</span>
+                <span className="font-bold text-lg" >{price}</span>
+            </div>
+        </div>
+    </div>
+}
+
+export default ProductCard;

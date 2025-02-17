@@ -37,13 +37,21 @@ async function main() {
     account.address,
     codeId,
     initMsg,
-    "Fixed swap",
+    "Cowrie Marketplace",
     "auto",
   );
   const contractAddress = instantiateReciept.contractAddress;
   // only return code that will create a new file with the codeId+deploy as name in the root and write the CA into itimport { writeFileSync } from "fs";
   const deployInfo = `${codeId}_deploy.txt`;
   writeFileSync(deployInfo, contractAddress);
+
+  console.log("--------------------------------------------------------");
+  console.log(":: Code Id :: ------ :: Contract Address :: ------------");
+  console.log("--------------------------------------------------------");
+
+  console.log("--------------------------------------------------------");
+  console.log(`:: ${codeId} :: ------ ${contractAddress} `);
+  console.log("--------------------------------------------------------");
 }
 
 main().catch(console.error);

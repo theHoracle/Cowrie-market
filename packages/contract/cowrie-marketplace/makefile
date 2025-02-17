@@ -4,8 +4,8 @@
 # -----------------------------------------------------------------------------
 CONTRACT_NAME      = cowrie-marketplace
 WASM_FILE          = target/wasm32-unknown-unknown/release/$(CONTRACT_NAME).wasm
-OPTIMIZER_VERSION  = 0.13.0
-OPTIMIZER_IMAGE    = cosmwasm/optimizer:$(OPTIMIZER_VERSION)
+OPTIMIZER_VERSION  = 0.16.0
+OPTIMIZER_IMAGE    = cosmwasm/optimizer-arm64:$(OPTIMIZER_VERSION) # for arm64 based machines else remove "-arm64"
 
 # -----------------------------------------------------------------------------
 # Network configuration (customize these values)
@@ -86,10 +86,9 @@ optimize: build
 	# Run the optimizer on the wasm file generated in release mode.
 	# The optimized file will be written directly to the artifacts folder.
 	docker run --rm -v $(shell pwd):/code \
+		--mount type=volume,source="$(basename "$(pwd)")_cache",target=/target \
 		--mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
-		$(OPTIMIZER_IMAGE) \
-		/code/target/wasm32-unknown-unknown/release/$(CONTRACT_NAME).wasm \
-		-o /code/artifacts/$(CONTRACT_NAME)_optimized.wasm
+	  ${OPTIMIZER_IMAGE}
 
 # -----------------------------------------------------------------------------
 # Check if the wasm binary is valid

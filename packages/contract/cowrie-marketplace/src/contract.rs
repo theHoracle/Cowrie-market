@@ -80,14 +80,34 @@ pub fn execute(
             title,
             description,
             price,
+            image_url,
             token_denom,
-        } => execute_create_listing(deps, env, info, title, description, price, token_denom),
+        } => execute_create_listing(
+            deps,
+            env,
+            info,
+            title,
+            description,
+            image_url,
+            price,
+            token_denom,
+        ),
         ExecuteMsg::UpdateListing {
             listing_id,
             title,
             description,
+            image_url,
             price,
-        } => execute_update_listing(deps, env, info, listing_id, title, description, price),
+        } => execute_update_listing(
+            deps,
+            env,
+            info,
+            listing_id,
+            title,
+            image_url,
+            description,
+            price,
+        ),
         ExecuteMsg::CancelListing { listing_id } => execute_cancel_listing(deps, info, listing_id),
         ExecuteMsg::BuyItem { listing_id } => execute_buy_item(deps, env, info, listing_id),
         ExecuteMsg::UpdateConfig { commission_rate } => {
@@ -101,6 +121,7 @@ pub fn execute_create_listing(
     env: Env,
     info: MessageInfo,
     title: String,
+    image_url: String,
     description: String,
     price: Uint128,
     token_denom: String,
@@ -112,6 +133,7 @@ pub fn execute_create_listing(
         id: listing_id,
         seller: info.sender.clone(),
         title,
+        image_url,
         description,
         price,
         token_denom,
@@ -182,6 +204,7 @@ pub fn execute_update_listing(
     listing_id: u64,
     title: Option<String>,
     description: Option<String>,
+    image_url: Option<String>,
     price: Option<Uint128>,
 ) -> Result<Response, ContractError> {
     let mut listing = LISTINGS.load(deps.storage, listing_id)?;
@@ -203,6 +226,11 @@ pub fn execute_update_listing(
     if let Some(new_description) = description {
         listing.description = new_description;
     }
+
+    if let Some(new_image_url) = image_url {
+        listing.image_url = new_image_url;
+    }
+
     if let Some(new_price) = price {
         listing.price = new_price;
     }

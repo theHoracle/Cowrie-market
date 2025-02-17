@@ -71,4 +71,3 @@ pub fn only_seller(listing: &Listing, sender: &Addr) -> Result<(), ContractError
     }
     Ok(())
 }
-

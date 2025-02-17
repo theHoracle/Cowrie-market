@@ -14,6 +14,7 @@ pub struct Listing {
     pub id: u64,
     pub seller: Addr,
     pub title: String,
+    pub image_url: String,
     pub description: String,
     pub price: Uint128,
     pub token_denom: String,
@@ -33,4 +34,3 @@ pub enum ListingStatus {
 pub const CONFIG: Item<Config> = Item::new("config");
 pub const LISTINGS: Map<u64, Listing> = Map::new("listings");
 pub const USER_LISTINGS: Map<(Addr, u64), bool> = Map::new("user_listings");
-

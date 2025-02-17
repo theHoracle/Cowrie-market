@@ -1,1 +1,1 @@
-06aadb8a16751fc1b0dba6b81842e06f1b7510ec39c5ccc13e12e023328e7754  cowrie_marketplace.wasm
+85d9e68349ebea8ff9a694ff289d31cc806ac7b480af406ade3d9b81b14ea569  cowrie_marketplace.wasm

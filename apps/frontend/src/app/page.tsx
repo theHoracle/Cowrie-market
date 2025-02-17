@@ -1,10 +1,13 @@
-import { client } from "@/contract/contract";
-import Image from "next/image";
+import Hero from "@/components/hero";
+import ProductsGallery from "@/components/products-gallery";
 
 export default async function Home() {
-  const bal = await client.getBalance(
-    "wasm1tnwkf33txhugatkz77u0l7w0c5rjfd2tx42y0t",
-    "uatom",
+  return (
+    <div className="flex flex-col">
+      <Hero />
+      <div className="py-4">
+        <ProductsGallery />
+      </div>
+    </div>
   );
-  return <div>Balance is: {bal.amount}</div>;
 }

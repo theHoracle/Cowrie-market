@@ -12,6 +12,7 @@ pub enum ExecuteMsg {
     CreateListing {
         title: String,
         description: String,
+        image_url: String,
         price: Uint128,
         token_denom: String,
     },
@@ -19,6 +20,7 @@ pub enum ExecuteMsg {
         listing_id: u64,
         title: Option<String>,
         description: Option<String>,
+        image_url: Option<String>,
         price: Option<Uint128>,
     },
     CancelListing {
