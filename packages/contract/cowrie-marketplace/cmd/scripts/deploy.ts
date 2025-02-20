@@ -42,7 +42,7 @@ async function main() {
   );
   const contractAddress = instantiateReciept.contractAddress;
   // only return code that will create a new file with the codeId+deploy as name in the root and write the CA into itimport { writeFileSync } from "fs";
-  const deployInfo = `${codeId}_deploy.txt`;
+  const deployInfo = `Cowriemarketplace_${codeId}_deploy.txt`;
   writeFileSync(deployInfo, contractAddress);
 
   console.log("--------------------------------------------------------");
