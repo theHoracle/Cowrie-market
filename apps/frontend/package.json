@@ -22,7 +22,7 @@
     "@radix-ui/react-slot": "^1.1.2",
     "@radix-ui/react-tooltip": "^1.1.8",
     "@tanstack/react-query": "^5.66.0",
-    "@thehoracle/cowrie-marketplace-types": "^0.0.1",
+    "@thehoracle/cowrie-marketplace-types": "^0.0.2",
     "chain-registry": "^1.69.126",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

@@ -48,8 +48,8 @@ importers:
         specifier: ^5.66.0
         version: 5.66.0(react@19.0.0)
       '@thehoracle/cowrie-marketplace-types':
-        specifier: ^0.0.1
-        version: 0.0.1(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)
+        specifier: ^0.0.2
+        version: 0.0.2(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)
       chain-registry:
         specifier: ^1.69.126
         version: 1.69.126
@@ -1896,8 +1896,8 @@ packages:
   '@terra-money/terra.proto@3.0.5':
     resolution: {integrity: sha512-8tvT41qte2mpiNoHq2dMmV7soMxwf4ckuJ+F2pMrb7iVcqaBo30/dIfyTdFm5mEH5i5P6cTJggm+UlIZBSPhwQ==}
 
-  '@thehoracle/cowrie-marketplace-types@0.0.1':
-    resolution: {integrity: sha512-T9ddqPpXUby15XMKZVoKN49n3Th0HP7uBW604MXkd0sCexHRMAGXhdCIZzPUqAD1VnpokT091Y2HPSN2nXVfLw==}
+  '@thehoracle/cowrie-marketplace-types@0.0.2':
+    resolution: {integrity: sha512-Z57B/YN+soc7Sic2o0xiHifJovt321D6bUmPkMixoi6QRLlYFjRNVVfak12bndO4PG/NBdnqX0rmZKW8/Wunxg==}
 
   '@types/estree@1.0.6':
     resolution: {integrity: sha512-AYnb1nQyY49te+VRAVgmzfcgjYS91mY5P0TKUDCLEM+gNnA+3T6rWITXRLYCpahpqSQbN5cE+gHpnPyXjHWxcw==}
@@ -7882,7 +7882,7 @@ snapshots:
       long: 4.0.0
       protobufjs: 6.11.4
 
-  '@thehoracle/cowrie-marketplace-types@0.0.1(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)':
+  '@thehoracle/cowrie-marketplace-types@0.0.2(bufferutil@4.0.9)(react@19.0.0)(utf-8-validate@5.0.10)':
     dependencies:
       '@cosmjs/amino': 0.33.0
       '@cosmjs/cosmwasm-stargate': 0.31.0(bufferutil@4.0.9)(utf-8-validate@5.0.10)

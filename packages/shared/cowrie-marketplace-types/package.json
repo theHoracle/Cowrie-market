@@ -1,6 +1,6 @@
 {
   "name": "@thehoracle/cowrie-marketplace-types",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Types def for cowrie marketplace contract",
   "author": "James Morgan <princemjames2@gmail.com>",
   "homepage": "https://github.com/theHoracle/cowrie-marketplace-types#readme",

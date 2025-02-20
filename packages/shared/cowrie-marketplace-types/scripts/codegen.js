@@ -3,13 +3,9 @@ const codegen = require('@cosmwasm/ts-codegen').default;
 codegen({
   contracts: [
     {
-      name: 'SG721',
-      dir: './contracts/stargaze-sg721/schema'
+      name: 'cowrie-marketplace',
+      dir: './contracts/'
     },
-    {
-      name: 'Minter',
-      dir: './contracts/stargaze-minter/schema'
-    }
   ],
   outPath: './src/',
   options: {
@@ -22,6 +18,12 @@ codegen({
     },
     useContractsHooks: {
       enabled: false // if you enable this, add react!
+    },
+    reactQuery: {
+      enabled: true,
+      version: "v4",
+      queryKeys: true,
+      mutations: true,
     }
   }
 }).then(() => {
