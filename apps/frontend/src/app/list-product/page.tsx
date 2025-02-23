@@ -1,10 +1,12 @@
-import ListNewProduct from "@/components/providers/product/list-product"
+import MarketplaceListingForm from "@/components/product/list-product";
 
 const ListProductPage = () => {
-  return <div>
-    I list new products
-    <ListNewProduct />
-  </div>
-}
+  return (
+    <div>
+      I list new products
+      <MarketplaceListingForm />
+    </div>
+  );
+};
 
-export default ListProductPage
+export default ListProductPage;

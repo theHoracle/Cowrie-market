@@ -68,8 +68,8 @@ const data = {
       icon: Bot,
       items: [
         {
-          title: "Genesis",
-          url: "#",
+          title: "List Product",
+          url: "/list-product",
         },
         {
           title: "Explorer",
@@ -115,7 +115,7 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
- // const {} = useChain("cosmos");
+  // const {} = useChain("cosmos");
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
