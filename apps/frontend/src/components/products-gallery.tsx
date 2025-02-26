@@ -1,11 +1,11 @@
-import { useCowrieMarketplaceGetListingsQuery } from "@/contract/hooks";
-import ProductCard from "./product-card";
-import { client } from "@/contract/contract";
+"use client";
 
-const ProductsGallery = async () => {
-  const products = await client.getListings({
-    status: "active",
-  });
+import { useGetAllProducts } from "@/contract/hooks";
+import ProductCard from "./product-card";
+
+const ProductsGallery = () => {
+  const { data: products } = useGetAllProducts();
+
   console.log("Products: ", products);
   return (
     <div>
