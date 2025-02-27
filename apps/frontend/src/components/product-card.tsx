@@ -18,7 +18,7 @@ const ProductCard = ({
         <Image
           fill
           alt={description.slice(0, 20)}
-          src={image_url}
+          src={description}
           className="object-cover object-center"
         />
       </div>
@@ -34,4 +34,3 @@ const ProductCard = ({
 };
 
 export default ProductCard;
-

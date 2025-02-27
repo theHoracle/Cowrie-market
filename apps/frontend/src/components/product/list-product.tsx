@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { initializeExecutionClient } from "@/contract/contract";
+import { useListNewProduct } from "@/contract/hooks";
 
 const MAX_FILE_SIZE = 5000000; // 5MB
 const ACCEPTED_IMAGE_TYPES = [
@@ -72,6 +73,13 @@ export function MarketplaceListingForm() {
   */
   }
 
+  const {
+    mutate: listProduct,
+    isPending,
+    isError,
+    isSuccess,
+  } = useListNewProduct();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -110,7 +118,7 @@ export function MarketplaceListingForm() {
       return;
     }
 
-    const list = await initializeExecutionClient("address");
+    const { mutate } = useListNewProduct();
 
     {
       /*
@@ -131,6 +139,35 @@ export function MarketplaceListingForm() {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="image"
+          render={({ field: { onChange, value, ...field } }) => (
+            <FormItem>
+              <FormLabel>Image</FormLabel>
+              <FormControl>
+                <Input
+                  type="file"
+                  accept={ACCEPTED_IMAGE_TYPES.join(",")}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      onChange(e.target.files);
+                      uploadImage(file);
+                    }
+                  }}
+                  {...field}
+                  className="h-52 flex text-center "
+                />
+              </FormControl>
+              <FormDescription>
+                Upload an image (max 5MB, JPG/PNG/WebP)
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="title"
@@ -166,69 +203,39 @@ export function MarketplaceListingForm() {
           )}
         />
 
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Price</FormLabel>
-              <FormControl>
-                <Input type="number" step="0.01" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+        <div className="flex items-center gap-2 md:gap-4 lg:gap-6">
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Price</FormLabel>
+                <FormControl>
+                  <Input type="number" step="0.01" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="tokenDenom"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Token Denomination</FormLabel>
-              <FormControl>
-                <Input placeholder="USDT" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="image"
-          render={({ field: { onChange, value, ...field } }) => (
-            <FormItem>
-              <FormLabel>Image</FormLabel>
-              <FormControl>
-                <Input
-                  type="file"
-                  accept={ACCEPTED_IMAGE_TYPES.join(",")}
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      onChange(e.target.files);
-                      uploadImage(file);
-                    }
-                  }}
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                Upload an image (max 5MB, JPG/PNG/WebP)
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <Button
-          type="submit"
-          disabled={isUploading || createListingMutation.isLoading}
-        >
+          <FormField
+            control={form.control}
+            name="tokenDenom"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Token Denomination</FormLabel>
+                <FormControl>
+                  <Input placeholder="ATOM" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <Button type="submit" disabled={isPending}>
           {isUploading
             ? "Uploading..."
-            : createListingMutation.isLoading
+            : isPending
               ? "Creating..."
               : "Create Listing"}
         </Button>

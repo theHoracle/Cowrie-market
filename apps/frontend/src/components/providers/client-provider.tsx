@@ -6,6 +6,7 @@ import { chains, assets } from "chain-registry";
 import { wallets } from "@cosmos-kit/keplr";
 import QueryProvider from "./query-provider";
 import WalletChainProvider from "./wallet/wallet-provider";
+import { ContractProvider } from "./contract-context";
 
 function ClientProviders({ children }: PropsWithChildren) {
   return (
@@ -17,7 +18,9 @@ function ClientProviders({ children }: PropsWithChildren) {
         disableTransitionOnChange
       >
         <QueryProvider>
-          <WalletChainProvider>{children}</WalletChainProvider>
+          <ContractProvider>
+            <WalletChainProvider>{children}</WalletChainProvider>
+          </ContractProvider>
         </QueryProvider>
       </ThemeProvider>
     </>
