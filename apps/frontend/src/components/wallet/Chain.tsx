@@ -1,55 +1,45 @@
-import { useEffect, useMemo, useState } from 'react';
-import { Chain } from '@chain-registry/types';
-import { matchSorter } from 'match-sorter';
+import { useEffect, useMemo, useState } from "react";
+import { Chain } from "@chain-registry/types";
+import { Avatar } from "@interchain-ui/react";
 import {
-  Avatar,
-  Box,
-  Combobox,
-  Skeleton,
-  Stack,
-  Text,
-  ThemeProvider,
-  useTheme,
-} from '@interchain-ui/react';
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
+import {
+  Command,
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandItem,
+  CommandGroup,
+} from "@/components/ui/command";
+import { Button } from "../ui/button";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export type ChainSelectProps = {
   chains: Chain[];
   chainName?: string;
-  onChange?: (chainName?: string) => void;
+  onChange: (chainName?: string) => void;
 };
 
 export function ChainSelect({
   chainName,
   chains = [],
-  onChange = () => { },
+  onChange,
 }: ChainSelectProps) {
-  const { themeClass } = useTheme();
   const [value, setValue] = useState<string>();
-  const [input, setInput] = useState<string>('');
+
+  const [open, setOpen] = useState(false);
 
   const cache = useMemo(
     () =>
       chains.reduce(
         (cache, chain) => ((cache[chain.chain_name] = chain), cache),
-        {} as Record<string, Chain[][number]>
+        {} as Record<string, Chain[][number]>,
       ),
-    [chains]
-  );
-
-  const options = useMemo(
-    () =>
-      matchSorter(
-        chains
-          .map((chain) => ({
-            logo: chain.logo_URIs?.png || chain.logo_URIs?.svg || '',
-            value: chain.chain_name,
-            label: chain.pretty_name,
-          }))
-          .filter((chain) => chain.value && chain.label),
-        input,
-        { keys: ['value', 'label'] }
-      ),
-    [chains, input]
+    [chains],
   );
 
   useEffect(() => {
@@ -60,7 +50,7 @@ export function ChainSelect({
 
       if (chain) {
         setValue(chain.chain_name);
-        setInput(chain.pretty_name || '');
+        onChange(chain.chain_name);
       }
     }
   }, [chains, chainName]);
@@ -68,88 +58,67 @@ export function ChainSelect({
   const avatar = cache[value!]?.logo_URIs?.png || cache[value!]?.logo_URIs?.svg;
 
   return (
-    <ThemeProvider>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        className={themeClass}
-      >
-        <Combobox
-          selectedKey={value}
-          inputValue={input}
-          onInputChange={(input) => {
-            setInput(input);
-            if (!input) setValue(undefined);
-          }}
-          onSelectionChange={(value) => {
-            const name = value as string;
-            if (name) {
-              setValue(name);
-              if (cache[name]) {
-                onChange(cache[name].chain_name);
-              }
-            }
-          }}
-          inputAddonStart={
-            value && avatar ? (
-              <Avatar
-                name={value as string}
-                getInitials={(name) => name[0]}
-                size="xs"
-                src={avatar}
-                fallbackMode="bg"
-                attributes={{
-                  paddingX: '$4',
-                }}
-              />
-            ) : (
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                px="$4"
-              >
-                <Skeleton width="24px" height="24px" borderRadius="$full" />
-              </Box>
-            )
-          }
-          styleProps={{
-            width: {
-              mobile: '100%',
-              mdMobile: '350px',
-            },
-          }}
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          role="combobox"
+          aria-expanded={open}
+          className="w-full capitalize flex items-center h-10 justify-between"
         >
-          {options.map((option) => (
-            <Combobox.Item key={option.value} textValue={option.label}>
-              <ChainOption logo={option.logo ?? ''} label={option.label ?? ''} />
-            </Combobox.Item>
-          ))}
-        </Combobox>
-      </Box>
-    </ThemeProvider>
-  );
-}
-
-function ChainOption({ logo, label }: { logo: string; label: string }) {
-  return (
-    <Stack
-      direction="horizontal"
-      space="$4"
-      attributes={{ alignItems: 'center' }}
-    >
-      <Avatar
-        name={label}
-        getInitials={(name) => name[0]}
-        size="xs"
-        src={logo}
-        fallbackMode="bg"
-      />
-
-      <Text fontSize="$md" fontWeight="$normal" color="$text">
-        {label}
-      </Text>
-    </Stack>
+          <div className="flex items-center gap-2">
+            <img
+              src={avatar || "/placeholder.png"}
+              alt={value}
+              height={25}
+              width={25}
+              className="rounded-full"
+            />
+            {value
+              ? chains.find((chain) => chain.chain_name === value)?.chain_name
+              : "Select Chain..."}
+          </div>
+          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <Command>
+          <CommandInput placeholder="Search chains" className="h-9" />
+          <CommandList>
+            <CommandEmpty>No chain found...</CommandEmpty>
+            <CommandGroup>
+              {chains.map((chain) => (
+                <CommandItem
+                  key={chain.chain_id}
+                  value={chain.chain_name}
+                  onSelect={(currentValue) => {
+                    setValue(currentValue === value ? "" : currentValue);
+                    setOpen(false);
+                  }}
+                  className="capitalize"
+                >
+                  <div>
+                    <img
+                      src={chain.logo_URIs?.png || "/placeholder.png"}
+                      alt={chain.chain_name}
+                      height={30}
+                      width={30}
+                      className="rounded-full"
+                    />
+                  </div>
+                  {chain.chain_name}
+                  <Check
+                    className={cn(
+                      "ml-auto",
+                      value === chain.chain_name ? "opacity-100" : "opacity-0",
+                    )}
+                  />
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </PopoverContent>
+    </Popover>
   );
 }

@@ -14,7 +14,7 @@ export const useGetProduct = (id: number) => {};
 const getAllProducts = async (
   queryClient: CowrieMarketplaceQueryClient | null,
 ) => {
-  if (!queryClient) return;
+  if (!queryClient) return null;
   return await queryClient.getListings({
     status: "active",
   });
@@ -31,7 +31,7 @@ export const useGetAllProducts = () => {
 
 interface ExecuteListProduct {
   sender: string;
-  executeMsg: ExecuteMsg["create_listing"];
+  executeMsg: ExecuteMsg;
   funds?: Coin[];
 }
 

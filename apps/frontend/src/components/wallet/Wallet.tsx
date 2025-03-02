@@ -21,6 +21,7 @@ import {
   ButtonNotExist,
   ButtonRejected,
 } from "./Connect";
+import { Button } from "../ui/button";
 
 export type WalletProps = {
   chainName?: string;
@@ -66,52 +67,28 @@ export function Wallet({
   }, []);
 
   return (
-    <Box py="$16">
-      <Box mx="auto" maxWidth="28rem" attributes={{ mb: "$12" }}>
-        <ChainSelect
-          chains={chains}
-          chainName={chain.chain_name}
-          onChange={handleChainChange}
-        />
-      </Box>
-      <Stack
-        direction="vertical"
-        attributes={{
-          mx: "auto",
-          px: "$8",
-          py: "$15",
-          maxWidth: "21rem",
-          borderRadius: "$lg",
-          justifyContent: "center",
-          backgroundColor: useColorModeValue("$white", "$blackAlpha500"),
-          boxShadow: useColorModeValue(
-            "0 0 2px #dfdfdf, 0 0 6px -2px #d3d3d3",
-            "0 0 2px #363636, 0 0 8px -2px #4f4f4f",
-          ),
-        }}
-      >
+    <div className="flex flex-col gap-1">
+      <ChainSelect
+        chains={chains}
+        chainName={chain.chain_name}
+        onChange={handleChainChange}
+      />
+
+      <div>
         {username ? <User name={username} /> : null}
         {address ? (
           <ClipboardCopyText text={address} truncate="middle" />
         ) : null}
-        <Box
-          my="$8"
-          flex="1"
-          width="full"
-          display="flex"
-          height="$16"
-          overflow="hidden"
-          justifyContent="center"
-          px={{ mobile: "$8", tablet: "$10" }}
-        >
-          {ConnectButton}
-        </Box>
+      </div>
 
+      <>{ConnectButton}</>
+
+      <div>
         {message &&
         [WalletStatus.Error, WalletStatus.Rejected].includes(status) ? (
           <Warning text={`${wallet?.prettyName}: ${message}`} />
         ) : null}
-      </Stack>
-    </Box>
+      </div>
+    </div>
   );
 }
