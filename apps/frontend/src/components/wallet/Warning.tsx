@@ -2,7 +2,7 @@ import { Icon, IconName } from "@interchain-ui/react";
 
 export type WarningProps = {
   text: string;
-  icon: IconName;
+  icon?: IconName;
 };
 
 export function Warning({ text, icon }: WarningProps) {

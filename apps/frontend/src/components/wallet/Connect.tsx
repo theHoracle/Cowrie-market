@@ -9,9 +9,14 @@ export type ButtonProps = {
   loading?: boolean;
   disabled?: boolean;
   onClick?: MouseEventHandler<HTMLButtonElement>;
+  address?: string;
+  iconUrl?: string;
 };
 
-export type ConnectProps = Pick<ButtonProps, "text" | "loading" | "onClick">;
+export type ConnectProps = Pick<
+  ButtonProps,
+  "text" | "loading" | "onClick" | "address" | "iconUrl"
+>;
 
 function noop() {}
 
@@ -23,11 +28,12 @@ export function Button({
   onClick = noop,
 }: ButtonProps) {
   const { open } = useSidebar();
+
   return (
     <UIButton
       onClick={onClick}
       disabled={disabled || loading}
-      className="flex items-center  gap-2 h-10"
+      className="flex items-center gap-2 h-10 w-full"
     >
       {open && !loading ? (
         <Icon name={icon ?? "walletFilled"} />
@@ -52,10 +58,14 @@ export const ButtonConnect = ({
 );
 
 export const ButtonConnected = ({
-  text = "My Wallet",
   onClick = noop,
+  iconUrl,
+  address,
 }: ConnectProps) => (
-  <Button text={text} icon="walletFilled" onClick={onClick} />
+  <UIButton className="flex items-center gap-2 w-full ">
+    <img src={iconUrl} alt="chain image" width={20} height={20} />
+    <p className="truncate text-sm">{address}</p>
+  </UIButton>
 );
 
 export const ButtonDisconnected = ({

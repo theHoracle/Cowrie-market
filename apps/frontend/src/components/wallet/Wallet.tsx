@@ -44,7 +44,13 @@ export function Wallet({
   } = useChain(chainName);
 
   const ConnectButton = {
-    [WalletStatus.Connected]: <ButtonConnected onClick={openView} />,
+    [WalletStatus.Connected]: (
+      <ButtonConnected
+        onClick={openView}
+        address={address}
+        iconUrl={chain.logo_URIs?.png || "/placeholder.png"}
+      />
+    ),
     [WalletStatus.Connecting]: <ButtonConnecting />,
     [WalletStatus.Disconnected]: <ButtonDisconnected onClick={connect} />,
     [WalletStatus.Error]: <ButtonError onClick={openView} />,
@@ -74,14 +80,7 @@ export function Wallet({
         onChange={handleChainChange}
       />
 
-      <div>
-        {username ? <User name={username} /> : null}
-        {address ? (
-          <ClipboardCopyText text={address} truncate="middle" />
-        ) : null}
-      </div>
-
-      <>{ConnectButton}</>
+      <div>{ConnectButton}</div>
 
       <div>
         {message &&
