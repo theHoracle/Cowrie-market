@@ -17,6 +17,7 @@ import {
 import { Button } from "../ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useSidebar } from "../ui/sidebar";
 
 export type ChainSelectProps = {
   chains: Chain[];
@@ -30,7 +31,7 @@ export function ChainSelect({
   onChange,
 }: ChainSelectProps) {
   const [value, setValue] = useState<string>();
-
+  const { open: sidebarOpen } = useSidebar();
   const [open, setOpen] = useState(false);
 
   const cache = useMemo(
@@ -64,21 +65,28 @@ export function ChainSelect({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-full capitalize flex items-center h-10 justify-between"
+          className={`w-full capitalize flex items-center h-10 justify-between ${sidebarOpen ? "" : "p-1"}`}
         >
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 w-full">
             <img
               src={avatar || "/placeholder.png"}
               alt={value}
-              height={25}
-              width={25}
+              height={20}
+              width={20}
               className="rounded-full"
             />
-            {value
-              ? chains.find((chain) => chain.chain_name === value)?.chain_name
-              : "Select Chain..."}
+            {sidebarOpen && (
+              <p>
+                {value
+                  ? chains.find((chain) => chain.chain_name === value)
+                      ?.chain_name
+                  : "Select Chain..."}
+              </p>
+            )}
           </div>
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          {sidebarOpen && (
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          )}
         </Button>
       </PopoverTrigger>
       <PopoverContent>
@@ -86,7 +94,7 @@ export function ChainSelect({
           <CommandInput placeholder="Search chains" className="h-9" />
           <CommandList>
             <CommandEmpty>No chain found...</CommandEmpty>
-            <CommandGroup>
+            <CommandGroup key="command-items">
               {chains.map((chain) => (
                 <CommandItem
                   key={chain.chain_id}

@@ -10,6 +10,8 @@ import {
   initializeQueryClient,
   initializeExecutionClient,
 } from "@/contract/contract"; // adjust the import path
+import { useChain } from "@cosmos-kit/react";
+import { CHAIN_NAME } from "@/config/defaults";
 
 // Define the shape of our context.
 interface ContractContextType {
@@ -17,11 +19,8 @@ interface ContractContextType {
   queryClient: InstanceType<
     typeof MarketplaceContract.CowrieMarketplaceQueryClient
   > | null;
-  // A helper function to create an execution client using the sender's wallet address.
-  getExecutionClient: (
-    sender: string,
-  ) => Promise<
-    InstanceType<typeof MarketplaceContract.CowrieMarketplaceClient>
+  getExecutionClient: () => Promise<
+    InstanceType<typeof MarketplaceContract.CowrieMarketplaceClient> | undefined
   >;
 }
 
@@ -35,6 +34,8 @@ export const ContractProvider = ({ children }: { children: ReactNode }) => {
   const [queryClient, setQueryClient] =
     useState<ContractContextType["queryClient"]>(null);
 
+  const { address: sender } = useChain(CHAIN_NAME);
+
   // Initialize the query client when the provider mounts.
   useEffect(() => {
     async function init() {
@@ -45,7 +46,8 @@ export const ContractProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   // This function creates an execution client for the provided sender.
-  const getExecutionClient = async (sender: string) => {
+  const getExecutionClient = async () => {
+    if (!sender) return;
     const { executionClient } = await initializeExecutionClient(sender);
     return executionClient;
   };

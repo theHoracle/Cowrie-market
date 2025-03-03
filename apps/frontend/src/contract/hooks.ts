@@ -1,13 +1,11 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { useContract } from "@/components/providers/contract-context";
+import { CowrieMarketplaceQueryClient } from "@thehoracle/cowrie-marketplace-types/dist/CowrieMarketplace.client";
 import {
-  CowrieMarketplaceClient,
-  CowrieMarketplaceQueryClient,
-} from "@thehoracle/cowrie-marketplace-types/dist/CowrieMarketplace.client";
-import { Listing } from "@thehoracle/cowrie-marketplace-types/dist/CowrieMarketplace.types";
-import { Coin } from "@cosmjs/proto-signing";
-import { ExecuteMsg } from "@thehoracle/cowrie-marketplace-types/dist/CowrieMarketplace.types";
+  Listing,
+  Uint128,
+} from "@thehoracle/cowrie-marketplace-types/dist/CowrieMarketplace.types";
 
 export const useGetProduct = (id: number) => {};
 
@@ -29,22 +27,30 @@ export const useGetAllProducts = () => {
   });
 };
 
-interface ExecuteListProduct {
-  sender: string;
-  executeMsg: ExecuteMsg;
-  funds?: Coin[];
-}
+// interface ExecuteListProduct {
+//  executeMsg: Extract<ExecuteMsg, {create_listing: any}>["create_listing"]
+// }
+
+type ExecuteMsg = {
+  description: string;
+  imageUrl: string;
+  price: Uint128;
+  title: string;
+  tokenDenom: string;
+};
 
 export const useListNewProduct = () => {
   const { getExecutionClient } = useContract();
-  const dummySender = "neutron1ng85pfzhvln6fs7fzx7yxjy9n7kawahzc8lcvx";
-  const executionClient = getExecutionClient(dummySender);
-  return useMutation(
-    async ({ sender, executeMsg, funds }: ExecuteListProduct) => {
-      const exec = await getExecutionClient(sender || dummySender);
-      return exec.createListing({
-        ...executeMsg,
-      });
-    },
-  );
+
+  return useMutation(async (executeMsg: ExecuteMsg) => {
+    const execClient = await getExecutionClient();
+
+    if (!execClient) {
+      throw new Error("Execution client not available");
+    }
+    const res = await execClient?.createListing({
+      ...executeMsg,
+    });
+    return res;
+  });
 };
