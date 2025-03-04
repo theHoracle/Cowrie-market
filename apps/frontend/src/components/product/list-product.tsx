@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { initializeExecutionClient } from "@/contract/contract";
 import { useListNewProduct } from "@/contract/hooks";
+import { uploadImage } from "@/aws/aws-s3";
 
 const MAX_FILE_SIZE = 5000000; // 5MB
 const ACCEPTED_IMAGE_TYPES = [
@@ -90,15 +91,15 @@ export function MarketplaceListingForm() {
     },
   });
 
-  const uploadImage = async (file: File) => {
+  const upload = async (file: File) => {
+    if(!file && !form.getValues().title) {
+      console.log("No file detected or title added")
+      return;
+    }
     setIsUploading(true);
     try {
-      // Replace this with your actual image upload logi c
-      // Example using a generic upload function:
-      // const uploadedUrl = await uploadToStorage(file);
-      // setImageUrl(uploadedUrl);
-
-      // Placeholder for demo purposes
+      if()
+      const url = await uploadImage()
       setImageUrl("https://example.com/placeholder.jpg");
     } catch (error) {
       console.error("Error uploading image:", error);
@@ -153,7 +154,7 @@ export function MarketplaceListingForm() {
                     const file = e.target.files?.[0];
                     if (file) {
                       onChange(e.target.files);
-                      uploadImage(file);
+                      upload(file);
                     }
                   }}
                   {...field}

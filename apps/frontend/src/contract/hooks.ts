@@ -2,10 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 
 import { useContract } from "@/components/providers/contract-context";
 import { CowrieMarketplaceQueryClient } from "@thehoracle/cowrie-marketplace-types/dist/CowrieMarketplace.client";
-import {
-  Listing,
-  Uint128,
-} from "@thehoracle/cowrie-marketplace-types/dist/CowrieMarketplace.types";
+import { Uint128 } from "@thehoracle/cowrie-marketplace-types/dist/CowrieMarketplace.types";
 
 export const useGetProduct = (id: number) => {};
 
@@ -42,15 +39,17 @@ type ExecuteMsg = {
 export const useListNewProduct = () => {
   const { getExecutionClient } = useContract();
 
-  return useMutation(async (executeMsg: ExecuteMsg) => {
+  return useMutation(async ({ executeMsg }: { executeMsg: ExecuteMsg }) => {
     const execClient = await getExecutionClient();
 
     if (!execClient) {
       throw new Error("Execution client not available");
     }
+
     const res = await execClient?.createListing({
       ...executeMsg,
     });
+
     return res;
-  });
+  }, {});
 };

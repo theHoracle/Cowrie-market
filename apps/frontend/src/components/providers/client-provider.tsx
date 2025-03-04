@@ -1,9 +1,7 @@
 "use client";
 import { PropsWithChildren } from "react";
 import { ThemeProvider } from "./theme-providers";
-import { ChainProvider, useChain } from "@cosmos-kit/react";
-import { chains, assets } from "chain-registry";
-import { wallets } from "@cosmos-kit/keplr";
+
 import QueryProvider from "./query-provider";
 import WalletChainProvider from "./wallet/wallet-provider";
 import { ContractProvider } from "./contract-context";
@@ -18,9 +16,9 @@ function ClientProviders({ children }: PropsWithChildren) {
         disableTransitionOnChange
       >
         <QueryProvider>
-          <ContractProvider>
-            <WalletChainProvider>{children}</WalletChainProvider>
-          </ContractProvider>
+          <WalletChainProvider>
+            <ContractProvider>{children}</ContractProvider>
+          </WalletChainProvider>
         </QueryProvider>
       </ThemeProvider>
     </>
